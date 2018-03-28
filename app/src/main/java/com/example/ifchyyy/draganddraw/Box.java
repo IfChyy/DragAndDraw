@@ -17,6 +17,7 @@ public class Box {
         this.current = origin;
     }
 
+
     //------------------------------------GETTERS AND SETTERS
     public PointF getOrigin() {
         return origin;
