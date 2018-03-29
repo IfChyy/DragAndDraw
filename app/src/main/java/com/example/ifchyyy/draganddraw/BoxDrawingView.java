@@ -82,10 +82,10 @@ public class BoxDrawingView extends View {
                 //create a new box with the firstly touched coordinates
                 currentBox = new Box(current);
                 boxes.add(currentBox);
-                Log.d(TAG, mActivePointerId + " ACTION DOWN " + current.x + "   " + current.y);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 action = "ACTION_POINTER_DOWN";
+                //get the continuing finger inputs
                 second = new PointF(event.getX(1), event.getY(1));
 
                 Log.d(TAG, mActivePointerId + " ACTION Pointer DOWN " + second.x + "   " + second.y);
@@ -99,25 +99,29 @@ public class BoxDrawingView extends View {
                     //then invalidate boxDrawingView
                     invalidate();
                 }
-                if (mActivePointerId > 0 ) {
+                //check if current input is equal to 2 - we want only two fingers
+                if (event.getPointerCount() == 2) {
+                    //get the new coordiantes
                     second = new PointF(event.getX(1), event.getY(1));
-
-                    Log.d(TAG, mActivePointerId + " ACTION Pointer MOVE " + second.x + "   " + second.y);
+                    //calculate the angle
+                    currentBox.setAngle(getDegrees(current, second));
+                    Log.d(TAG, mActivePointerId + " ACTION Pointer MOVE " +currentBox.getAngle());
                 }
+                invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-              //  action = "ACTION_UP";
+                //  action = "ACTION_UP";
                 currentBox = null;
                 break;
             case MotionEvent.ACTION_POINTER_UP:
 
                 break;
             case MotionEvent.ACTION_CANCEL:
-              //  action = "ACTION_CANCEL";
+                //  action = "ACTION_CANCEL";
                 currentBox = null;
                 break;
         }
-           Log.d(TAG, action + " at x=" + current.x + ", y=" + current.y);
+        //   Log.d(TAG, action + " at x=" + current.x + ", y=" + current.y);
         return true;
     }
 
@@ -134,9 +138,33 @@ public class BoxDrawingView extends View {
             Float top = Math.min(box.getOrigin().y, box.getCurrent().y);
             Float bottom = Math.max(box.getOrigin().y, box.getCurrent().y);
 
+
+            // Calculate the center of the rectangle
+            float centerX = (box.getCurrent().x + box.getOrigin().x) / 2;
+            float centerY = (box.getCurrent().y + box.getOrigin().y) / 2;
+
+            //rotate before creating the rect
+            canvas.rotate(box.getAngle(), centerX, centerY);
+            //create rect
             canvas.drawRect(left, top, right, bottom, boxPaint);
+            //rotate minus the degrees rotateted before creating rect to keep
+            //position of next rect angle to 0
+            canvas.rotate(-1 * box.getAngle(), centerX, centerY);
         }
     }
+
+    //method to get the angle rotation from the second finger input on the screen
+    public float getDegrees(PointF first, PointF second) {
+        //convert rect coordinates to polar
+        float angle = (float) Math.atan2(second.y - first.y, second.x  - first.x);
+        //add mathPi/2 ;
+        angle += Math.PI/2;
+        //translate to degrees
+        angle = (float) Math.toDegrees(angle);
+
+        return angle;
+    }
+
 
     //-------------CHALLENGE SAVING STATE
     //save the instance of the boxes array List to json and parse it as abunndle

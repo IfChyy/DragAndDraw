@@ -9,12 +9,13 @@ import android.graphics.PointF;
  */
 
 public class Box {
-    private PointF origin,current;
-    private PointF originRotate,currentRotate;
+    private PointF origin, current;
+    private Float angle;
 
-    public Box(PointF origin){
+    public Box(PointF origin) {
         this.origin = origin;
         this.current = origin;
+        this.angle = 0.0f;
     }
 
 
@@ -30,5 +31,14 @@ public class Box {
 
     public void setCurrent(PointF current) {
         this.current = current;
+    }
+
+    public Float getAngle() {
+        return angle;
+    }
+
+    public void setAngle(Float angle) {
+
+        this.angle = angle;
     }
 }
