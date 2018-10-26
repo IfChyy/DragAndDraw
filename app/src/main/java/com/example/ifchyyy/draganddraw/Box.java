@@ -4,7 +4,7 @@ import android.graphics.PointF;
 
 /**
  * Created by Ivo Georgiev(IfChyy)
- * A box class representing a box with cordinates origin and current
+ * A box class representing a box with coordinates origin and current
  * which is going to be represented on the screen when the user draws the box
  */
 

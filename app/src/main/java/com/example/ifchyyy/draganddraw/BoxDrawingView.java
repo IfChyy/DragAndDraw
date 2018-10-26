@@ -110,18 +110,18 @@ public class BoxDrawingView extends View {
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                //  action = "ACTION_UP";
+                  action = "ACTION_UP";
                 currentBox = null;
                 break;
             case MotionEvent.ACTION_POINTER_UP:
 
                 break;
             case MotionEvent.ACTION_CANCEL:
-                //  action = "ACTION_CANCEL";
+                  action = "ACTION_CANCEL";
                 currentBox = null;
                 break;
         }
-        //   Log.d(TAG, action + " at x=" + current.x + ", y=" + current.y);
+           Log.d(TAG, action + " at x=" + current.x + ", y=" + current.y);
         return true;
     }
 
